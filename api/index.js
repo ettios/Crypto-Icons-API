@@ -24,6 +24,7 @@ app.get('/api/:style/:currency/:size/:color?', async (req, res) => {
   const size = req.params.size;
   const cacheKey = req.path;
   const filename = currency + '-' + style + '-' + size + '.png';
+  const needToReadFile = req.params.read;
 
   // Validate size is > 0
   if (size <= 0) {
@@ -46,7 +47,11 @@ app.get('/api/:style/:currency/:size/:color?', async (req, res) => {
 
   client.on('error', function (err) {
     client.quit();
-    generatePNG(req, res, null);
+    if (needToReadFile) {
+      generatePNG(req, res, null);
+    } else {
+      redirectPNG(req, res, null);
+    }
   });
 
   client.on('connect', function (err) {
@@ -54,7 +59,11 @@ app.get('/api/:style/:currency/:size/:color?', async (req, res) => {
     client.get(cacheKey, async (error, result) => {
       if (result == null) {
         console.log("Cache miss");
-        generatePNG(req, res, client);
+        if (needToReadFile) {
+          generatePNG(req, res, client);
+        } else {
+          redirectPNG(req, res, client);
+        }
       } else {
         client.quit();
         console.log("Cache hit");
@@ -72,6 +81,22 @@ function sendPNG(response, png, filename) {
   response.send(png);
 }
 
+async function redirectPNG(req, res, redis) {
+  // Params
+  const style = req.params.style;
+  const currency = req.params.currency;
+  const size = req.params.size;
+  const color = req.params.color;
+  const cacheKey = req.path;
+  const filename = currency + '-' + style + '-' + size + '.png';
+
+  // console.log("req", req);
+  // SVG file path
+  const svgPath = path.join(__dirname.replace("/api", ""), 'svg', style, currency + '.svg');
+  console.warn('SVG path:', svgPath);
+  res.redirect(svgPath);
+}
+
 async function generatePNG(req, res, redis) {
   // Params
   const style = req.params.style;
@@ -84,7 +109,7 @@ async function generatePNG(req, res, redis) {
   // console.log("req", req);
   // SVG file path
   // const svgPath = path.join("./", 'svg', style, currency + '.svg');
-  const svgPath = path.join(__dirname.replace("/api", ""), 'svg', style, currency + '.svg');
+  const svgPath = path.join(__dirname.replace("/api", ""), "public", 'svg', style, currency + '.svg');
   console.warn('SVG path:', svgPath);
   // Check if file exists
   if (!fs.existsSync(svgPath)) {
