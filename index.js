@@ -12,7 +12,7 @@ const path = require('path');
 
 // GET Home page
 app.get('/', function (req, res) {
-  res.sendFile('/public/index.html');
+  res.sendFile('/index.html');
 });
 
 // GET png
@@ -81,7 +81,8 @@ async function generatePNG(req, res, redis) {
   const filename = currency + '-' + style + '-' + size + '.png';
 
   // SVG file path
-  const svgPath = path.join(__dirname, 'public', 'svg', style, currency + '.svg');
+  const svgPath = path.join("/", 'public', 'svg', style, currency + '.svg');
+  // const svgPath = path.join(__dirname, 'public', 'svg', style, currency + '.svg');
   console.warn('SVG path:', svgPath);
   // Check if file exists
   if (!fs.existsSync(svgPath)) {
