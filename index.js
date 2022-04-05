@@ -7,7 +7,8 @@ const { document } = (new JSDOM('')).window;
 const fs = require('fs');
 const path = require('path');
 
-
+console.warn('Starting server...', __dirname);
+console.warn('express static', express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public'));
 
 // GET Home page
