@@ -7,8 +7,8 @@ const { document } = (new JSDOM('')).window;
 const fs = require('fs');
 const path = require('path');
 
-console.warn('Starting server...', __dirname);
-app.use("/", express.static(path.join(__dirname, 'public')));
+// console.warn('Starting server...', __dirname);
+// app.use("/", express.static(path.join(__dirname, 'public')));
 
 // GET Home page
 app.get('/', function (req, res) {
@@ -82,7 +82,7 @@ async function generatePNG(req, res, redis) {
 
   // SVG file path
   const svgPath = path.join(__dirname, 'public', 'svg', style, currency + '.svg');
-
+  console.warn('SVG path:', svgPath);
   // Check if file exists
   if (!fs.existsSync(svgPath)) {
     res.status(404).send(null);
