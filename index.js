@@ -8,11 +8,11 @@ const fs = require('fs');
 const path = require('path');
 
 console.warn('Starting server...', __dirname);
-app.use("/public", express.static(path.join(__dirname + '/public')));
+app.use("/", express.static(path.join(__dirname, 'public')));
 
 // GET Home page
 app.get('/', function (req, res) {
-  res.sendFile('index.html');
+  res.sendFile('/public/index.html');
 });
 
 // GET png
