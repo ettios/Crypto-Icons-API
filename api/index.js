@@ -17,6 +17,7 @@ app.get('/', function (req, res) {
 
 // GET png
 app.get('/api/:style/:currency/:size/:color?', async (req, res) => {
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   // Params
   const style = req.params.style;
   const currency = req.params.currency;
