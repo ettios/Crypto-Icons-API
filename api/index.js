@@ -90,10 +90,10 @@ async function redirectPNG(req, res, redis) {
   const cacheKey = req.path;
   const filename = currency + '-' + style + '-' + size + '.png';
 
-  // console.log("req", req);
+  console.log("redirectPNG", style, currency);
   // SVG file path
-  const svgPath = path.join(__dirname.replace("/api", ""), 'svg', style, currency + '.svg');
-  console.warn('SVG path:', svgPath);
+  const svgPath = path.join("/", 'svg', style, currency + '.svg');
+  console.warn('redirectPNG SVG path:', svgPath);
   res.redirect(svgPath);
 }
 
