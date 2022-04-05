@@ -84,7 +84,7 @@ async function generatePNG(req, res, redis) {
   // console.log("req", req);
   // SVG file path
   // const svgPath = path.join("./", 'svg', style, currency + '.svg');
-  const svgPath = path.join(__dirname.replace("/api", ""), 'public', 'svg', style, currency + '.svg');
+  const svgPath = path.join(__dirname.replace("/api", ""), 'svg', style, currency + '.svg');
   console.warn('SVG path:', svgPath);
   // Check if file exists
   if (!fs.existsSync(svgPath)) {
